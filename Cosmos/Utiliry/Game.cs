@@ -20,8 +20,8 @@
                 {"Марс", "Вы на марсе. Здесь холодно и пустынно." },
                 {"Юпитер", "Вы на Юпитере. Здесь сильные бури." },
                 {"Сатурн", "Вы на Сатурне. Тут красивые кольца:>"},
-                {"Уран", "" },
-                {"Нептун", }
+                {"Уран", "Вы на Уране. " },
+                {"Нептун", "Вы на Нептуне. " }
             };
 
             currentPlanet = "Земля";
@@ -52,12 +52,14 @@
                 }
                 else if (command == "идти на Марс" && fuel >= 20)
                 {
+                    currentPlanet = "Марс";
+                    fuel -= 20;
                     RandomEvent();
-                    FlyToPlanet("Марс", 20);
                 }
                 else if (command == "идти на Юпитер" && fuel >= 30)
                 {
-                    FlyToPlanet("Юпитер", 30);
+                    currentPlanet = "Юпитер";
+                    fuel -= 30;
                     RandomEvent();
                 }
                 else if (command == "вернуться на Землю" && fuel >= 20)
@@ -109,41 +111,6 @@
             }
         }
 
-        private void FlyToPlanet(string targetPlanet, int fuelCost)
-        {
-            if (fuel < fuelCost)
-            {
-                Console.WriteLine("Недостаточно топлива для перелета!");
-                return;
-            }
-
-            Console.WriteLine($"Полет на {targetPlanet} начался...");
-            AsteroidEncounter();
-            currentPlanet = targetPlanet;
-            fuel -= fuelCost;
-            Console.WriteLine($"Прибытие на {targetPlanet}!");
-            RandomEvent();
-        }
-
-        private void AsteroidEncounter()
-        {
-            Random random = new Random();
-            int asteroidCount = random.Next(1, 4);
-
-            Console.WriteLine("Встреча с астероидами!");
-            for (int i = 0; i < asteroidCount; i++)
-            {
-                if (random.Next(0, 2) == 0)
-                {
-                    health -= 15;
-                    Console.WriteLine($"Астероид попал! Здоровье уменьшилось на 15. Текущее здоровье: {health}");
-                }
-                else
-                {
-                    Console.WriteLine("Астероид пропущен!");
-                }
-            }
-        }
         private void RandomEvent()
         {
             Random rand = new();
