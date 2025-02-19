@@ -1,4 +1,6 @@
-﻿namespace Cosmos.Utility
+﻿using System.Numerics;
+
+namespace Cosmos.Utility
 {
     class Game
     {
@@ -9,6 +11,8 @@
         private int health;
         private List<string> inventory;
         private List<string> quests;
+        Rocket rocket = new();
+        private List<Asteroides> asteroides;
 
         public Game()
         {
@@ -33,42 +37,17 @@
         }
         public void Start()
         {
+            Console.SetWindowSize(230, 60);
+            Console.SetBufferSize(230, 60);
+
             Console.WriteLine("Добро пожаловать в 'Космическе приключение'!");
             Console.WriteLine("Вы можете исследовать планеты: Земля, Марс, Юпитер");
             Console.WriteLine("Введите 'выход' для завершения игры.");
 
             while (true)
             {
-                Console.WriteLine(planets[currentPlanet]);
-                Console.WriteLine($"Топливо: {fuel}, Еда: {food}, Здоровье {health}");
-                Console.WriteLine("Квесты: " + (quests.Count > 0 ? string.Join(", ", quests) : "Нет акивных квестов"));
-                Console.Write("Что вы хотите сделать? ");
-                string command = Console.ReadLine().ToLower();
-
-                if (command == "выход")
-                {
-                    Console.WriteLine("Спасибо за игру");
-                    break;
-                }
-                else if (command == "идти на Марс" && fuel >= 20)
-                {
-                    currentPlanet = "Марс";
-                    fuel -= 20;
-                    RandomEvent();
-                }
-                else if (command == "идти на Юпитер" && fuel >= 30)
-                {
-                    currentPlanet = "Юпитер";
-                    fuel -= 30;
-                    RandomEvent();
-                }
-                else if (command == "вернуться на Землю" && fuel >= 20)
-                {
-                    currentPlanet = "Земля";
-                    fuel -= 20;
-                    RandomEvent();
-                }
-                else if (command == "собрать ресурсы" && currentPlanet == "Земля")
+                
+                if (command == "собрать ресурсы" && currentPlanet == "Земля")
                 {
                     inventory.Add("ресурсы");
                     Console.WriteLine("Вы собрали ресурсы!");
@@ -111,6 +90,51 @@
             }
         }
 
+        private void DrawGameField()
+        {
+            DrawHungerBar();
+            for (int y = 0; y < 100; y++)
+            {
+                for (int x = 0; x < 100; x++)
+                {
+                    if (x == rocket.PositionX && y == rocket.PositionY)
+                    {
+                        Console.Write("■");
+                    }
+                    else if (asteroides.Any(e => e.PositionX == x && e.PositionY == y))
+                    {
+                        Console.Write("O");
+                    }
+                    else if (asteroides.Any(a => a.PositionX == x && a.PositionY == y))
+                    {
+                        Console.Write("P");
+                    }
+                    else
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.WriteLine();
+            }
+            DrawControls();
+        private void DrawHungerBar()
+        {
+            Console.Write("Топливо: [");
+            int fuelSegments = rocket.Fuel / 10;
+            for (int i = 0; i < 10; i++)
+            {
+                if (i < fuelSegments)
+                {
+                    Console.Write("▓");
+                }
+                else
+                {
+                    Console.Write("░");
+                }
+            }
+            Console.WriteLine("]");
+        }
+
         private void RandomEvent()
         {
             Random rand = new();
@@ -131,7 +155,36 @@
                 food += 10;
             }
         }
+        private void HandleInput()
+        {
+            if (Console.KeyAvailable)
+            {
+                var key = Console.ReadKey(true).Key;
+                switch (key)
+                {
+                    case ConsoleKey.LeftArrow: MovePlayer(-1, 0); break;
+                    case ConsoleKey.RightArrow: MovePlayer(1, 0); break;
+                    case ConsoleKey.UpArrow: MovePlayer(0, -1); break;
+                    case ConsoleKey.DownArrow: MovePlayer(0, 1); break;
+                }
+            }
+        }
+        private void MovePlayer(int dx, int dy)
+        {
+            int newX = rocket.PositionX + dx;
+            int newY = rocket.PositionY + dy;
 
+            if (!rocket.IsCollision(newX, newY, asteroides))
+            {
+                rocket.PositionX = newX;
+                rocket.PositionY = newY;
+            }
+            else
+            {
+                Console.WriteLine("Вы столкнулись с астеройдом, и получили повреждение.");
+                health -= 15;
+            }
+        }
         private void Battle()
         {
             Console.WriteLine("Вы вступили в бой с космическими пиратами!");
@@ -189,6 +242,12 @@
                     inventory.Remove("ресурсы");
                 }
             }
+        }
+        private void DrawControls()
+        {
+            Console.WriteLine("Управление:");
+            Console.WriteLine("← → ↑ ↓ - Движение");
+            Console.WriteLine("Выход - Закрыть игру");
         }
     }
 }
