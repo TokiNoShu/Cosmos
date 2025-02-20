@@ -40,4 +40,8 @@ public class Player
             Console.WriteLine("Вы достигли границы галактики!");
         }
     }
+    public void GetCoins(int value)
+    {
+        Cosmocoins += value;
+    }
 }

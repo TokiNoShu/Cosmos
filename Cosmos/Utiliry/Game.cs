@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using System.Threading;
-
-public class Game
+﻿public class Game
 {
     private Player Player { get; set; }
     private GalaxyMap GalaxyMap { get; set; }
@@ -10,7 +6,6 @@ public class Game
     private BattleSystem BattleSystem { get; set; }
     private Shop Shop { get; set; }
     private Random Random { get; set; }
-
     public Game()
     {
         GalaxyMap = new GalaxyMap(20, 20);
@@ -34,16 +29,17 @@ public class Game
                 GalaxyMap.AddPlanet(new Planet("Солнце", "Центр Солнечной системы.", null, new List<string>(), x, y, 'S', 0));
             }
         }
-
-        GalaxyMap.AddPlanet(new Planet("Меркурий", "Ближайшая к Солнцу планета.", null, new List<string> { "Кислотный кристалл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'M', 100));
-        GalaxyMap.AddPlanet(new Planet("Венера", "Вторая планета от Солнца.", null, new List<string> { "Вулканический газ" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'V', 120));
-        GalaxyMap.AddPlanet(new Planet("Земля", "Третья планета от Солнца.", "Галактическая Империя", new List<string> { "Древесина", "Металл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'E', 150));
-        GalaxyMap.AddPlanet(new Planet("Марс", "Четвертая планета от Солнца.", null, new List<string> { "Марсианский камень" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'R', 200));
-        GalaxyMap.AddPlanet(new Planet("Юпитер", "Пятая планета от Солнца.", null, new List<string> { "Газовый конденсат" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'J', 250));
-        GalaxyMap.AddPlanet(new Planet("Сатурн", "Шестая планета от Солнца.", null, new List<string> { "Кольцевая пыль" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'S', 300));
-        GalaxyMap.AddPlanet(new Planet("Уран", "Седьмая планета от Солнца.", null, new List<string> { "Ледяной кристалл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'U', 350));
-        GalaxyMap.AddPlanet(new Planet("Нептун", "Восьмая планета от Солнца.", null, new List<string> { "Глубинный газ" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'N', 400));
-        GalaxyMap.AddPlanet(new Planet("База повстанцев", "Не особо-то и секретная база повстанцев.", "Повстанцы", new List<string> { "Оружие", "Боеприпасы" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'P', 500));
+        int merkx = Random.Next(0, GalaxyMap.Width);
+        int merky = Random.Next(0, GalaxyMap.Height);
+        GalaxyMap.AddPlanet(new Planet("Меркурий", "Ближайшая к Солнцу планета.", null, new List<string> { "Кислотный кристалл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'M', 5));
+        GalaxyMap.AddPlanet(new Planet("Венера", "Вторая планета от Солнца.", null, new List<string> { "Вулканический газ" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'V', 5));
+        GalaxyMap.AddPlanet(new Planet("Земля", "Третья планета от Солнца.", "Галактическая Империя", new List<string> { "Древесина", "Металл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'E', 5));
+        GalaxyMap.AddPlanet(new Planet("Марс", "Четвертая планета от Солнца.", null, new List<string> { "Марсианский камень" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'R', 5));
+        GalaxyMap.AddPlanet(new Planet("Юпитер", "Пятая планета от Солнца.", null, new List<string> { "Газовый конденсат" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'J', 5));
+        GalaxyMap.AddPlanet(new Planet("Сатурн", "Шестая планета от Солнца.", null, new List<string> { "Кольцевая пыль" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'S', 5));
+        GalaxyMap.AddPlanet(new Planet("Уран", "Седьмая планета от Солнца.", null, new List<string> { "Ледяной кристалл" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'U', 5));
+        GalaxyMap.AddPlanet(new Planet("Нептун", "Восьмая планета от Солнца.", null, new List<string> { "Глубинный газ" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'N', 5));
+        GalaxyMap.AddPlanet(new Planet("База повстанцев", "Не особо-то и секретная база повстанцев.", "Повстанцы", new List<string> { "Оружие", "Боеприпасы" }, Random.Next(0, GalaxyMap.Width), Random.Next(0, GalaxyMap.Height), 'P', 5));
     }
 
     public void Start()
@@ -265,7 +261,7 @@ public class Game
             planet.Update();
         }
 
-        if (Random.Next(0, 1000) < 10)
+        if (Random.Next(0, 1000) < 5)
         {
             BattleSystem.StartBattle(Player);
         }

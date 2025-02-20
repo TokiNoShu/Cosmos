@@ -50,9 +50,10 @@ public class QuestSystem
         if (faction.CurrentQuest != null)
         {
             Console.WriteLine($"Вы выполнили задание: {faction.CurrentQuest}");
-            faction.LoyaltyLevel += 1;
+            faction.LoyaltyLevel += 20;
             player.ActiveQuests.Remove(faction.CurrentQuest);
             faction.CurrentQuest = null;
+            player.GetCoins(30);
         }
         else
         {

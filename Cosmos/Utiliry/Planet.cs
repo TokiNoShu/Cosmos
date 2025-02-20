@@ -14,7 +14,7 @@ public class Planet
     public int ResourceRegenerationTime { get; set; }
     private int _currentRegenerationTime;
 
-    public Planet(string name, string description, string faction, List<string> resources, int posX, int posY, char symbol, int regenerationTime = 100)
+    public Planet(string name, string description, string faction, List<string> resources, int posX, int posY, char symbol, int regenerationTime = 5)
     {
         Name = name;
         Description = description;
